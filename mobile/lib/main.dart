@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/resources/color.dart';
+
+import 'resources/color.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,11 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: Scaffold(
-        body: Container(),
+        body: SizedBox(
+          height: MediaQuery.sizeOf(context).height,
+          width: MediaQuery.sizeOf(context).width,
+          child: ColoredBox(color: primaryColor),
+        ),
       ),
     );
   }
