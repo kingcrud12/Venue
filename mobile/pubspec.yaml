@@ -1,4 +1,4 @@
-name: Konekt
+name: Venue
 description: "Découvrez et partagez les meilleurs plans de votre ville : restaurants, shopping, loisirs et bien plus encore, validés par une communauté passionnée qui partage vos centres d'intérêt"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
