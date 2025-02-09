@@ -1,8 +1,13 @@
+import 'package:Venue/models/UserData.dart';
+import 'package:Venue/pages/HomePage.dart';
+import 'package:Venue/pages/InformationsPage.dart';
 import 'package:flutter/material.dart';
-import 'resources/color.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider.value(value: UserData(), child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,6 +17,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Venue',
+      initialRoute: "/informations",
+      routes: {
+        "/": (context) => HomePage(),
+        "/informations": (context) => InformationsPage(),
+      },
     );
   }
 }
