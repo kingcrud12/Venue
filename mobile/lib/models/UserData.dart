@@ -13,31 +13,32 @@ enum PrivacyRestriction {
   const PrivacyRestriction(this.label);
 }
 
+UserData getDefaultSession() {
+  return UserData(
+      username: "@username",
+      name: "",
+      birthday: DateTime(1900, 1, 1),
+      phoneNumber: "",
+      email: "",
+      language: "FR",
+      profileImagePath: "");
+}
+
 class UserData with ChangeNotifier, DiagnosticableTreeMixin {
-  List<DataCategory> data = [
-    (
-      "Account information",
-      [
-        ("Handle", "@dos_santos"),
-        ("First Name", "Dos Santos"),
-        ("Last Name", "Lorenzo"),
-        ("Phone Number", " "),
-        ("e-mail", "example@example.com"),
-        ("Region", "Paris,France")
-      ],
-    ),
-    (
-      "Privacy",
-      [
-        ("Private Account", "False"),
-        ("Comments", PrivacyRestriction.everyone),
-        ("Direct messages", PrivacyRestriction.friends),
-        ("Mentions", PrivacyRestriction.everyone),
-        ("List of followers", PrivacyRestriction.everyone),
-        ("List of following", PrivacyRestriction.everyone),
-        ("Liked posts", PrivacyRestriction.everyone),
-        ("Comments", PrivacyRestriction.everyone),
-      ]
-    )
-  ]; // Sorted and classed by category
+// Sorted and classed by category
+  DateTime birthday;
+  String email;
+  String language;
+  String name;
+  String phoneNumber;
+  String profileImagePath;
+  String username;
+  UserData(
+      {required this.username,
+      required this.name,
+      required this.birthday,
+      required this.phoneNumber,
+      required this.email,
+      required this.language,
+      required this.profileImagePath});
 }
