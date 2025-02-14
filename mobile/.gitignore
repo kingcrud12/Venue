@@ -1,4 +1,6 @@
 # Other directory to ignore
+.gitignore
+.vscode
 linux/
 macos/
 windows/
