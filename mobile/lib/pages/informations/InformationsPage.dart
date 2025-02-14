@@ -4,6 +4,21 @@ import 'package:Venue/models/UserData.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+Map<String, List<(String, IconData)>> parameters = {
+  "Account": [
+    ("Account", Icons.account_box_rounded),
+    ("Privacy", Icons.key_rounded),
+    ("Security & Permissions", Icons.safety_check),
+  ],
+  "Content & Display": [
+    ("Notifications", Icons.notifications),
+    ("Content preferences", Icons.restaurant),
+    ("Audience controls", Icons.people),
+    ("Ads", Icons.ads_click)
+  ],
+  "Visibility": [("Messages", Icons.messenger), ("Sharing", Icons.share_sharp)]
+};
+
 class InformationsPage extends StatelessWidget {
   const InformationsPage({super.key});
   @override
@@ -14,65 +29,95 @@ class InformationsPage extends StatelessWidget {
     List<double> columns =
         [0, 0.08, 1 - 0.08, 1].map((e) => e * size.width).toList();
     UserData userData = context.read<UserData>();
-    return Scaffold(
-      body: SizedBox(
-        height: size.height,
-        width: size.width,
-        child: Stack(
+
+    return SizedBox(
+      height: size.height,
+      width: size.width,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back),
+          ),
+        ),
+        body: Stack(
           children: [
-            for (double d in columns)
-              Positioned(
-                left: d,
-                child: SizedBox(
-                  height: size.height,
-                  width: 1,
-                  child: ColoredBox(
-                    color: Colors.blue,
-                  ),
-                ),
+            FractionallySizedBox(
+              widthFactor: 1,
+              heightFactor: 1,
+              child: Container(
+                color: Theme.of(context).colorScheme.primaryContainer,
               ),
-            for (double d in rows)
-              Positioned(
-                top: d,
-                child: SizedBox(
-                  width: size.width,
-                  height: 1,
-                  child: ColoredBox(
-                    color: Colors.red,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: ListView(
+                children: [
+                  Text(
+                    "Settings",
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                ),
-              ),
-            Positioned(
-                left: min(columns[1], 100),
-                child: Text(
-                  "Venue",
-                  style: TextStyle(fontSize: 60),
-                )),
-            Positioned(
-              top: rows[1],
-              left: columns[1],
-              child: SizedBox(
-                height: rows[2] - rows[1],
-                width: columns[2] - columns[1],
-                child: ListView(
-                  children: [
-                    /*for ((String, List<(String, dynamic)>) category
-                        in userData.data) ...{
-                      Text(
-                        category.$1,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                  for (String a in parameters.keys) ...{
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      child: Text(
+                        a,
+                        style: Theme.of(context).textTheme.labelSmall,
                       ),
-                      for ((String, dynamic) d in category.$2)
-                        TextField(
-                          controller:
-                              TextEditingController(text: d.$2.toString()),
-                          decoration: InputDecoration(labelText: d.$1),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
-                    },*/
-                  ],
-                ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: Stack(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              for ((int, (String, IconData)) s
+                                  in parameters[a]!.indexed) ...{
+                                Row(spacing: 2.0, children: [
+                                  Icon(
+                                    s.$2.$2,
+                                    size: 30,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
+                                  ),
+                                  Text(
+                                    s.$2.$1,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ]),
+                                //_TextFieldAnimatedContainer(),
+                                if (s.$1 != parameters[a]!.length - 1)
+                                  Divider(
+                                    thickness: 4,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
+                                  ),
+                              }
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  }
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),
