@@ -1,0 +1,139 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: var(--background);
+  }
+
+/* Carte */
+.card {
+    display: flex;
+    flex-direction: column;     /* Empile les éléments verticalement */
+    justify-content: center;    /* Centre les éléments verticalement */
+    align-items: center;        /* Centre les éléments horizontalement */
+    gap: var(--space-md);        /* Espace entre les éléments */
+    width: 100%;
+    max-width: 424px;
+  }
+
+  h1 {
+    text-transform: uppercase;
+  } 
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    width: 100%;
+  }
+
+.label {
+    font-size: var(--text-base);
+    font-weight: 600;
+    }
+
+
+.input {
+    font-size: var(--text-sm);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-secondary);
+
+}
+
+
+
+.checkboxLabel {
+    font-size: var(--text-sm);
+}
+
+.linkContainer {
+    text-align: center;
+  }
+
+.link {
+    font-size: var(--text-sm);
+    font-family: var(--font-secondary);
+    
+  }  
+
+  .passwordContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.passwordToggle {
+    position: absolute;
+    right: 16px;
+    top: 13px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    align-items: center;
+}
+
+  .button {
+    text-transform: uppercase;
+  }
+  
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* S'étend sur tout l'espace disponible */
+    gap: 8px;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #6C757D;
+  }
+
+  .fontDivider {
+    font-size: var(--text-sm);
+    color: #6C757D;
+  }
+
+  .socialLoginContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    width: 100%;
+  }
+
+  .socialButton {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    padding: 12px;
+    width: 100%;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .signUpContainer {
+    font-size: var(--text-sm);
+    font-family: var(--font-secondary);
+  }
+  
+  
+  
+  
+
+  

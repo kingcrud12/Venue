@@ -1,0 +1,14 @@
+.container {
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    color: var(--primary);
+  }
+  
+  p {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+  }
