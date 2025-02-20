@@ -1,4 +1,4 @@
-# Venue - Plateforme de Bons Plans Sociale - global apis documentation
+# Venue - Plateforme de Bons Plans Sociale - global API documentation
 
 ## 📑 Table des matières
 
@@ -12,7 +12,7 @@
 
 ## Vue d'ensemble
 
-Konekt est une plateforme sociale de partage de bons plans permettant aux utilisateurs de découvrir et partager des recommandations authentiques.
+Venue est une plateforme sociale de partage de bons plans permettant aux utilisateurs de découvrir et partager des recommandations authentiques.
 
 ### 🎯 Objectifs
 
