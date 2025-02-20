@@ -257,17 +257,17 @@ Konekt est une plateforme sociale de partage de bons plans permettant aux utilis
                                    │     Auth0        │
                                    │                  │
                                    └────────┬─────────┘
-                                           │
-                                           ▼
+                                            │
+                                            ▼
 ┌──────────────┐               ┌──────────────────┐
 │              │               │                  │
-│   Client     │ ◄────────────►│   Gateway API   │
-│  Web/Mobile  │               │    (3000)       │
+│   Client     │ ◄────────────►│   Gateway API    │
+│  Web/Mobile  │               │    (3000)        │
 │              │               │                  │
 └──────────────┘               └───────┬──────────┘
-                                      │
-                                      ▼
-                              ┌──────────────┐
+                                       │
+                                       ▼
+                              ┌─────────────
                               │             │
                               │    Redis    │
                               │             │
@@ -278,8 +278,8 @@ Konekt est une plateforme sociale de partage de bons plans permettant aux utilis
                     ▼                ▼               ▼
          ┌──────────────────┐ ┌──────────────┐ ┌──────────────┐
          │   Auth Service   │ │ User Service │ │ Post Service │
-         │     (3001)      │ │    (3002)    │ │    (3003)    │
-         └───────┬─────────┘ └──────┬───────┘ └──────┬───────┘
+         │     (3001)      │ │    (3002)    │  │    (3003)    │
+         └───────┬─────────┘ └──────┬───────┘   ─────┬───────-┘
                  │                   │               │
                  ▼                   ▼               ▼
          ┌──────────────┐    ┌──────────────┐ ┌──────────────┐
@@ -297,10 +297,10 @@ Konekt est une plateforme sociale de partage de bons plans permettant aux utilis
 │  Client  ├────►│  Gateway  ├───►│ Auth Service├───►│ Auth0 │
 │          │     │           │    │             │    │       │
 └──────────┘     └───────────┘    └─────────────┘    └───┬───┘
-     ▲                                                    │
+     ▲                                                   │
      │                                                   │(4)
      │               ┌───────┐         (5)               │
-     └───────────────┤ Redis ◄─────────────────────────┘
+     └───────────────┤ Redis ◄─────────────────────────--┘
          (7)         └───────┘
 ```
 
@@ -319,10 +319,10 @@ Konekt est une plateforme sociale de partage de bons plans permettant aux utilis
 │  Client  ├───►│  Gateway  ├───►│ Auth Service├───►│  Redis   │
 │          │    │           │    │             │    │          │
 └──────────┘    └─────┬─────┘    └─────────────┘    └──────┬───┘
-                      │                                     │
-                      │(4)         ┌─────────────┐         │
+                      │                                    │
+                      │(4)         ────────────--          │
                       └──────────►│ Post Service │◄────────┘
-                                 └──────┬────────┘    (5)
+                                  └──────┬────────┘    (5)
                                        │
                                        ▼(6)
                                  ┌────────────┐
@@ -346,10 +346,10 @@ Konekt est une plateforme sociale de partage de bons plans permettant aux utilis
 │             │                              │             │
 └─────┬───────┘                              └─────┬───────┘
       │                                            │
-      │              ┌──────────┐                 │
-      └─────────────►│  Redis   │◄────────────────┘
+      │              ┌──────────┐                  │
+      └─────────────►│  Redis   │◄─────────────── ─┘
      Event Publish   │          │   Event Subscribe
-                    └──────────┘
+                     └──────────┘
 ```
 
 - Communication synchrone : TCP/HTTP
