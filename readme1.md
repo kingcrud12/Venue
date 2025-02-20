@@ -1,4 +1,4 @@
-# Konekt - Plateforme de Bons Plans Sociale
+# Venue - Plateforme de Bons Plans Sociale - global apis documentation
 
 ## 📑 Table des matières
 
