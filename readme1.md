@@ -43,7 +43,7 @@ Konekt est une plateforme sociale de partage de bons plans permettant aux utilis
 
 ## Architecture
 
-### Structure du projet
+### Structure du projet en microservices
 
 * **Gateway API (Port 3000)**
   * Point d'entrée unique
