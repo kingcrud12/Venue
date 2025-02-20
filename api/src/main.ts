@@ -8,7 +8,7 @@ const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
 
   const options = new DocumentBuilder()
-    .setTitle('Konekt web and mobile api')
+    .setTitle('Venue web and mobile api')
     .setDescription('API for konekt web and mobile api')
     .setVersion('1.0.0')
     .build();
