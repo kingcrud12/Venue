@@ -246,3 +246,120 @@ Konekt est une plateforme sociale de partage de bons plans permettant aux utilis
 
 * **Tests d'intégration**
   * npm run test:integration
+
+# Architecture et Flux de Données
+
+## 🏗 Architecture Globale
+
+```
+                                   ┌──────────────────┐
+                                   │                  │
+                                   │     Auth0        │
+                                   │                  │
+                                   └────────┬─────────┘
+                                           │
+                                           ▼
+┌──────────────┐               ┌──────────────────┐
+│              │               │                  │
+│   Client     │ ◄────────────►│   Gateway API   │
+│  Web/Mobile  │               │    (3000)       │
+│              │               │                  │
+└──────────────┘               └───────┬──────────┘
+                                      │
+                                      ▼
+                              ┌──────────────┐
+                              │             │
+                              │    Redis    │
+                              │             │
+                              └──────┬──────┘
+                                     │
+                    ┌────────────────┼───────────────┐
+                    │                │               │
+                    ▼                ▼               ▼
+         ┌──────────────────┐ ┌──────────────┐ ┌──────────────┐
+         │   Auth Service   │ │ User Service │ │ Post Service │
+         │     (3001)      │ │    (3002)    │ │    (3003)    │
+         └───────┬─────────┘ └──────┬───────┘ └──────┬───────┘
+                 │                   │               │
+                 ▼                   ▼               ▼
+         ┌──────────────┐    ┌──────────────┐ ┌──────────────┐
+         │  Auth DB     │    │   User DB    │ │   Post DB    │
+         └──────────────┘    └──────────────┘ └──────────────┘
+```
+
+## 🔄 Flux de Données
+
+### 1. Flux d'Authentification
+
+```
+┌──────────┐     ┌───────────┐    ┌─────────────┐    ┌───────┐
+│          │ (1) │           │(2) │             │(3) │       │
+│  Client  ├────►│  Gateway  ├───►│ Auth Service├───►│ Auth0 │
+│          │     │           │    │             │    │       │
+└──────────┘     └───────────┘    └─────────────┘    └───┬───┘
+     ▲                                                    │
+     │                                                   │(4)
+     │               ┌───────┐         (5)               │
+     └───────────────┤ Redis ◄─────────────────────────┘
+         (7)         └───────┘
+```
+
+1. Client envoie credentials
+2. Gateway route vers Auth Service
+3. Auth Service vérifie avec Auth0
+4. Auth0 valide et renvoie token
+5. Token stocké dans Redis
+6. Token renvoyé au Client
+
+### 2. Flux de Création de Post
+
+```
+┌──────────┐    ┌───────────┐    ┌─────────────┐    ┌──────────┐
+│          │(1) │           │(2) │             │(3) │          │
+│  Client  ├───►│  Gateway  ├───►│ Auth Service├───►│  Redis   │
+│          │    │           │    │             │    │          │
+└──────────┘    └─────┬─────┘    └─────────────┘    └──────┬───┘
+                      │                                     │
+                      │(4)         ┌─────────────┐         │
+                      └──────────►│ Post Service │◄────────┘
+                                 └──────┬────────┘    (5)
+                                       │
+                                       ▼(6)
+                                 ┌────────────┐
+                                 │  Post DB   │
+                                 └────────────┘
+```
+
+1. Client envoie nouveau post
+2. Gateway vérifie authentification
+3. Token vérifié dans Redis
+4. Données transmises au Post Service
+5. Événement publié dans Redis
+6. Post sauvegardé en DB
+
+### 3. Communication Inter-Services
+
+```
+┌─────────────┐                              ┌─────────────┐
+│             │◄─────── TCP/HTTP ───────────►│             │
+│ Service A   │                              │ Service B   │
+│             │                              │             │
+└─────┬───────┘                              └─────┬───────┘
+      │                                            │
+      │              ┌──────────┐                 │
+      └─────────────►│  Redis   │◄────────────────┘
+     Event Publish   │          │   Event Subscribe
+                    └──────────┘
+```
+
+- Communication synchrone : TCP/HTTP
+- Communication asynchrone : Redis Pub/Sub
+- Cache partagé : Redis
+
+## 🔐 Sécurité des Communications
+
+- Tous les endpoints protégés par Auth0
+- Communications inter-services via tokens JWT
+- Cache des tokens dans Redis
+- Rate limiting au niveau Gateway
+- HTTPS obligatoire en production
