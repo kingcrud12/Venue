@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:14  # 🔹 Mets la version exacte que tu utilises
+    container_name: venue_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: user_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - my-network
+    command:
+      - "postgres"
+      - "-c"
+      - "listen_addresses=*"
+
+networks:
+  my-network:
+
+volumes:
+  postgres-data:
