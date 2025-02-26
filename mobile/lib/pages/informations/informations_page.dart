@@ -160,6 +160,7 @@ class AccountFormState extends State<AccountForm> {
               );
 
               if (pickedDate is DateTime) {
+                context.read<UserDataViewModel>().update(birthday: pickedDate);
                 setState(() {
                   selectedDate =
                       "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
