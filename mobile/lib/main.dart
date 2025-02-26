@@ -1,7 +1,7 @@
-import 'package:Venue/models/UserData.dart';
 import 'package:Venue/pages/HomePage.dart';
-import 'package:Venue/pages/informations/InformationsPage.dart';
+import 'package:Venue/pages/informations/informations_page.dart';
 import 'package:Venue/resources/theme.dart';
+import 'package:Venue/view_models/user_data_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: MaterialTheme(
         createMaterialTextTheme(
-            Theme.of(context).textTheme.apply(fontSizeFactor: 1.8)),
+            Theme.of(context).textTheme.apply(fontSizeFactor: 1.0)),
       ).light(),
       title: 'Venue',
       initialRoute: "/informations",

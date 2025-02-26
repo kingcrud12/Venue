@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'package:Venue/models/UserData.dart';
+import 'package:Venue/view_models/user_data_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,11 +22,11 @@ class InformationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
-    List<double> rows =
+/*    List<double> rows =
         [0, 0.08, 1 - 0.08, 1].map((e) => e * size.height).toList();
     List<double> columns =
         [0, 0.08, 1 - 0.08, 1].map((e) => e * size.width).toList();
-    UserData userData = context.read<UserData>();
+    UserData userData = context.read<UserData>();*/
 
     return SizedBox(
       height: size.height,
@@ -100,7 +98,7 @@ class InformationsPage extends StatelessWidget {
                                         Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ]),
-                                //_TextFieldAnimatedContainer(),
+                                if (s.$2.$1 == "Account") AccountForm(),
                                 if (s.$1 != parameters[a]!.length - 1)
                                   Divider(
                                     thickness: 4,
@@ -121,6 +119,65 @@ class InformationsPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class AccountForm extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => AccountFormState();
+}
+
+class AccountFormState extends State<AccountForm> {
+  String selectedDate = "";
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          onChanged: (value) =>
+              context.read<UserDataViewModel>().update(username: value),
+          style: Theme.of(context).textTheme.bodySmall,
+          decoration: InputDecoration(labelText: "Username"),
+        ),
+        TextField(
+          onChanged: (value) =>
+              context.read<UserDataViewModel>().update(name: value),
+          style: Theme.of(context).textTheme.bodySmall,
+          decoration: InputDecoration(labelText: "Name"),
+        ),
+        Row(spacing: 20, children: [
+          Text(selectedDate),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.calendar_today),
+            onPressed: () async {
+              DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialEntryMode: DatePickerEntryMode.calendarOnly,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2019),
+                lastDate: DateTime(2050),
+              );
+
+              if (pickedDate is DateTime) {
+                context.read<UserDataViewModel>().update(birthday: pickedDate);
+                setState(() {
+                  selectedDate =
+                      "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                });
+              }
+            },
+            label: const Text('Choose birthday'),
+          )
+        ]),
+        TextField(
+          onChanged: (value) =>
+              context.read<UserDataViewModel>().update(phoneNumber: value),
+          style: Theme.of(context).textTheme.bodySmall,
+          decoration: InputDecoration(labelText: "Phone number"),
+          keyboardType: TextInputType.phone,
+        ),
+      ],
     );
   }
 }
