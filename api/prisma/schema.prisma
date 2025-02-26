@@ -1,6 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +10,84 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(uuid())
+  auth0Id           String   @unique
+  email             String   @unique
+  username          String   @unique
+  profilePictureUrl String?
+  bio               String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  lastLogin         DateTime?
+  isVerified        Boolean  @default(false)
+  isActive          Boolean  @default(true)
+  reputationScore   Int      @default(0)
+
+  preferences UserPreferences?
+  posts       Post[]
+  comments    Comment[]
+  likes       Like[]
+}
+
+model UserPreferences {
+  userId              String @id @unique
+  notificationEmail   Boolean @default(true)
+  notificationPush    Boolean @default(true)
+  notificationMessages Boolean @default(true)
+  privacyProfile      String  @default("public")
+  preferredLanguage   String  @default("fr")
+  preferredCategories String[]
+  theme              String  @default("light")
+  radiusSearch       Int     @default(10)
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id          String   @id @default(uuid())
+  userId      String
+  title       String
+  description String?
+  type        String
+  priceRange  String?
+  locationName String?
+  coordinates String?
+  address     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime?
+  status      String  @default("active")
+  visibility  String  @default("public")
+  viewCount   Int     @default(0)
+
+  user        User     @relation(fields: [userId], references: [id])
+  comments    Comment[]
+  likes       Like[]
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  postId     String
+  userId     String
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime?
+  isEdited   Boolean  @default(false)
+  status     String   @default("active")
+
+  post       Post @relation(fields: [postId], references: [id])
+  user       User @relation(fields: [userId], references: [id])
+}
+
+model Like {
+  id      String @id @default(uuid())
+  userId  String
+  postId  String
+  createdAt DateTime @default(now())
+
+  user    User @relation(fields: [userId], references: [id])
+  post    Post @relation(fields: [postId], references: [id])
 }
