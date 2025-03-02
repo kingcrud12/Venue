@@ -6,28 +6,22 @@ import { ConfigModule } from '@nestjs/config';
 // Load environment variables
 ConfigModule.forRoot();
 
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL,
-    },
-  },
-});
+const prisma = new PrismaClient();
 
 @Controller('prisma-users')
-export class PrismaUser {
+export class PrismaUserController {
   @Post()
-  async createUser(@Body() body: { name: string; email: string }) {
-    const { name, email } = body;
-    const user = await prisma.user.create({
-      data: { name, email },
+  async createUser(@Body() body: { username: string; password: string }) {
+    const { username } = body;
+    const user = await prisma.account.create({
+      data: { username },
     });
     return user;
   }
 
   @Get()
   async getUsers() {
-    const users = await prisma.user.findMany();
+    const users = await prisma.account.findMany();
     return users;
   }
 }

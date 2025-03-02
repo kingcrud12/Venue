@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model account {
+  username              String                  @unique
+  id_account            String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created               DateTime                @default(now()) @db.Timestamptz(6)
+  updated               DateTime                @default(now()) @db.Timestamptz(6)
+  account_general_blob  account_general_blob[]
+  account_general_text  account_general_text[]
+  account_identity      account_identity[]
+  account_sensible_blob account_sensible_blob[]
+  account_sensible_text account_sensible_text[]
+  session_with_user     session_with_user[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model account_general_blob {
+  id_account_general_blob String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_account              String   @db.Uuid
+  type                    String
+  category                String
+  blob                    Int      @db.Oid
+  created                 DateTime @default(now()) @db.Timestamptz(6)
+  updated                 DateTime @default(now()) @db.Timestamptz(6)
+  account                 account  @relation(fields: [id_account], references: [id_account], onDelete: Cascade)
+
+  @@unique([id_account, category], map: "unique_id_account_category_account_general_blob")
+}
+
+model account_general_text {
+  id_account_general_text String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_account              String   @db.Uuid
+  category                String
+  info                    String
+  created                 DateTime @default(now()) @db.Timestamptz(6)
+  updated                 DateTime @default(now()) @db.Timestamptz(6)
+  account                 account  @relation(fields: [id_account], references: [id_account], onDelete: Cascade)
+
+  @@unique([id_account, category], map: "unique_id_account_category_account_general_text")
+}
+
+model account_identity {
+  id_account_identity String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_account          String   @db.Uuid
+  lastname            String
+  firstname           String
+  created             DateTime @default(now()) @db.Timestamptz(6)
+  updated             DateTime @default(now()) @db.Timestamptz(6)
+  account             account  @relation(fields: [id_account], references: [id_account], onDelete: Cascade)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model account_sensible_blob {
+  id_account_sensible_blob String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_account               String   @db.Uuid
+  type                     String
+  category                 String
+  blob                     Int      @db.Oid
+  created                  DateTime @default(now()) @db.Timestamptz(6)
+  updated                  DateTime @default(now()) @db.Timestamptz(6)
+  account                  account  @relation(fields: [id_account], references: [id_account], onDelete: Cascade)
+
+  @@unique([id_account, category], map: "unique_id_account_category_account_sensible_blob")
+}
+
+model account_sensible_text {
+  id_account_sensible_text String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_account               String   @db.Uuid
+  category                 String
+  info                     String
+  created                  DateTime @default(now()) @db.Timestamptz(6)
+  updated                  DateTime @default(now()) @db.Timestamptz(6)
+  account                  account  @relation(fields: [id_account], references: [id_account], onDelete: Cascade)
+
+  @@unique([id_account, category], map: "unique_id_account_category_account_sensible_text")
+}
+
+model session_all {
+  id_session          String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created             DateTime              @default(now()) @db.Timestamptz(6)
+  session_closed      session_closed?
+  session_device_info session_device_info[]
+  session_event       session_event[]
+  session_ip_address  session_ip_address?
+  session_with_user   session_with_user?
+}
+
+model session_closed {
+  id_session  String      @id @db.Uuid
+  closed      DateTime    @default(now()) @db.Timestamptz(6)
+  session_all session_all @relation(fields: [id_session], references: [id_session], onDelete: Cascade)
+}
+
+model session_device_info {
+  id_session  String      @db.Uuid
+  info_type   String
+  info_data   String
+  session_all session_all @relation(fields: [id_session], references: [id_session], onDelete: Cascade)
+
+  @@id([id_session, info_type], map: "primary_key_session_device_info")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model session_event {
+  id_event_session String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_session       String      @db.Uuid
+  event_type       String
+  created          DateTime    @default(now()) @db.Timestamptz(6)
+  details          Json        @default("{}")
+  session_all      session_all @relation(fields: [id_session], references: [id_session], onDelete: Cascade)
+
+  @@unique([id_session, event_type], map: "unique_id_session_event_type")
+}
+
+model session_ip_address {
+  id_session  String      @id @db.Uuid
+  ip_address  String      @db.Inet
+  session_all session_all @relation(fields: [id_session], references: [id_session], onDelete: Cascade)
+}
+
+model session_with_user {
+  id_session  String      @id @db.Uuid
+  id_account  String      @db.Uuid
+  account     account     @relation(fields: [id_account], references: [id_account], onDelete: Cascade)
+  session_all session_all @relation(fields: [id_session], references: [id_session], onDelete: Cascade)
+}

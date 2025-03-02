@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS session_all, session_closed,session_with_user,session_event,session_device_info,session_ip_address ;
+DROP TABLE IF EXISTS session_all, session_closed,session_with_user,session_event,session_device_info,session_ip_address CASCADE ;
 
 CREATE TABLE session_all (
 	id_session UUID DEFAULT gen_random_uuid() PRIMARY KEY NOT NULL,
