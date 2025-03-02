@@ -22,11 +22,6 @@ class InformationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
-/*    List<double> rows =
-        [0, 0.08, 1 - 0.08, 1].map((e) => e * size.height).toList();
-    List<double> columns =
-        [0, 0.08, 1 - 0.08, 1].map((e) => e * size.width).toList();
-    UserData userData = context.read<UserData>();*/
 
     return SizedBox(
       height: size.height,
