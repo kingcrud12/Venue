@@ -1,0 +1,29 @@
+# ./docker/docker-compose.dev.yml
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: ../apis/microservices/gateway-api
+      dockerfile: Dockerfile
+    volumes:
+      - ../apis/microservices/gateway-api:/app
+      - /app/node_modules
+    command: npm run start:dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+
+  auth:
+    build:
+      context: ../apis/microservices/auth-service
+      dockerfile: Dockerfile
+    volumes:
+      - ../apis/microservices/auth-service:/app
+      - /app/node_modules
+    command: npm run start:dev
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development

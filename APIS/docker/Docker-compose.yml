@@ -1,0 +1,252 @@
+# ./docker-compose.yml
+version: '3.8'
+
+services:
+  # API Gateway
+  gateway-api:
+    build:
+      context: ../apis/microservices/gateway-api
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+    ports:
+      - "${GATEWAY_PORT:-3000}:3000"
+    volumes:
+      - ../apis/microservices/gateway-api:/app
+      - /app/node_modules
+    env_file:
+      - ../apis/microservices/gateway-api/.env
+    depends_on:
+      - auth-service
+      - user-service
+      - post-service
+      - social-service
+      - notification-service
+    networks:
+      - venue-network
+    restart: unless-stopped
+
+  # Service d'authentification
+  auth-service:
+    build:
+      context: ../apis/microservices/auth-service
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+    ports:
+      - "${AUTH_SERVICE_PORT:-3001}:3001"
+    volumes:
+      - ../apis/microservices/auth-service:/app
+      - /app/node_modules
+    env_file:
+      - ../apis/microservices/auth-service/.env
+    depends_on:
+      auth-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - venue-network
+    restart: unless-stopped
+
+  # Service utilisateurs
+  user-service:
+    build:
+      context: ../apis/microservices/user-service
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+    ports:
+      - "${USER_SERVICE_PORT:-3002}:3002"
+    volumes:
+      - ../apis/microservices/user-service:/app
+      - /app/node_modules
+    env_file:
+      - ../apis/microservices/user-service/.env
+    depends_on:
+      user-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - venue-network
+    restart: unless-stopped
+
+  # Service de posts
+  post-service:
+    build:
+      context: ../apis/microservices/post-service
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+    ports:
+      - "${POST_SERVICE_PORT:-3003}:3003"
+    volumes:
+      - ../apis/microservices/post-service:/app
+      - /app/node_modules
+    env_file:
+      - ../apis/microservices/post-service/.env
+    depends_on:
+      post-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - venue-network
+    restart: unless-stopped
+
+  # Service social
+  social-service:
+    build:
+      context: ../apis/microservices/social-service
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+    ports:
+      - "${SOCIAL_SERVICE_PORT:-3004}:3004"
+    volumes:
+      - ../apis/microservices/social-service:/app
+      - /app/node_modules
+    env_file:
+      - ../apis/microservices/social-service/.env
+    depends_on:
+      social-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - venue-network
+    restart: unless-stopped
+
+  # Service de notifications
+  notification-service:
+    build:
+      context: ../apis/microservices/notification-service
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+    ports:
+      - "${NOTIFICATION_SERVICE_PORT:-3005}:3005"
+    volumes:
+      - ../apis/microservices/notification-service:/app
+      - /app/node_modules
+    env_file:
+      - ../apis/microservices/notification-service/.env
+    depends_on:
+      redis:
+        condition: service_started
+    networks:
+      - venue-network
+    restart: unless-stopped
+
+  # Bases de données PostgreSQL pour chaque service
+  auth-db:
+    image: postgres:13
+    env_file:
+      - ../apis/microservices/auth-service/.env
+    ports:
+      - "${AUTH_DB_PORT:-5432}:5432"
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+    networks:
+      - venue-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  user-db:
+    image: postgres:13
+    env_file:
+      - ../apis/microservices/user-service/.env
+    ports:
+      - "${USER_DB_PORT:-5433}:5432"
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    networks:
+      - venue-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  post-db:
+    image: postgres:13
+    env_file:
+      - ../apis/microservices/post-service/.env
+    ports:
+      - "${POST_DB_PORT:-5434}:5432"
+    volumes:
+      - post-db-data:/var/lib/postgresql/data
+    networks:
+      - venue-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  social-db:
+    image: postgres:13
+    env_file:
+      - ../apis/microservices/social-service/.env
+    ports:
+      - "${SOCIAL_DB_PORT:-5435}:5432"
+    volumes:
+      - social-db-data:/var/lib/postgresql/data
+    networks:
+      - venue-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis pour le cache et les sessions
+  redis:
+    image: redis:alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - venue-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
+
+  # Outils de développement (uniquement en dev)
+  adminer:
+    image: adminer
+    ports:
+      - "${ADMINER_PORT:-8080}:8080"
+    networks:
+      - venue-network
+    profiles: ["dev"]
+
+volumes:
+  auth-db-data:
+    name: venue-auth-db-data
+  user-db-data:
+    name: venue-user-db-data
+  post-db-data:
+    name: venue-post-db-data
+  social-db-data:
+    name: venue-social-db-data
+  redis-data:
+    name: venue-redis-data
+
+networks:
+  venue-network:
+    name: venue-network
+    driver: bridge
