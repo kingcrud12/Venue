@@ -1,9 +1,4 @@
-# Other directory to ignore
-.gitignore
-.vscode
-linux/
-macos/
-windows/
+<<<<<<< HEAD
 # Miscellaneous
 *.class
 *.log
@@ -49,3 +44,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+=======
+*.tar
+>>>>>>> develop-VEN-61-server-serveur-avec-web-sockets
