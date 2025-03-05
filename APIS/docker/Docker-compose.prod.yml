@@ -1,0 +1,18 @@
+# ./docker/production/docker-compose.yml
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: ../../apis/microservices/gateway-api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+
+  # ... autres services avec configurations de production

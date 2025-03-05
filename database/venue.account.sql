@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS account, account_identity, account_sensible_text, account_sensible_blob, account_general_text, account_general_blob;
+DROP TABLE IF EXISTS account, account_identity, account_sensible_text, account_sensible_blob, account_general_text, account_general_blob CASCADE;
 CREATE TABLE account (
-    id_generic TEXT  UNIQUE NOT NULL , -- can be updated
+    username TEXT  UNIQUE NOT NULL , -- can be updated
     id_account UUID DEFAULT gen_random_uuid() PRIMARY KEY NOT NULL,
     created TIMESTAMPTZ DEFAULT  now() NOT NULL,
 	updated TIMESTAMPTZ DEFAULT now() NOT NULL

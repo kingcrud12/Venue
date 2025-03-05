@@ -14,6 +14,7 @@ const app_service_1 = require("./app.service");
 const echo_controller_1 = require("./echo/echo.controller");
 const echo_service_1 = require("./echo/echo.service");
 const auth_module_1 = require("./auth/auth.module");
+const crud_1 = require("./crud");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -31,7 +32,7 @@ exports.AppModule = AppModule = __decorate([
                 synchronize: true
             })
         ],
-        controllers: [app_controller_1.AppController, echo_controller_1.EchoController],
+        controllers: [app_controller_1.AppController, echo_controller_1.EchoController, crud_1.PrismaUserController],
         providers: [app_service_1.AppService, echo_service_1.EchoService],
     })
 ], AppModule);
