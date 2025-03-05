@@ -10,7 +10,7 @@ const pool = new Pool({
   host: process.env.DB_HOST || 'localhost',
   database: process.env.DB_NAME || 'venue_test',
   password: process.env.DB_PASSWORD ,
-  port:  5332,
+  port:  process.env.DB_PORT,
 });
 @Controller('venue/api/auth')
 export class AuthController {

@@ -9,7 +9,7 @@ import { PrismaUserController } from './crud';
 
 @Module({
   imports: [AuthModule,
-	   TypeOrmModule.forRoot({
+	/*   TypeOrmModule.forRoot({
 		type: 'postgres',
 		host: 'localhost',
 		port: 5332,
@@ -17,7 +17,7 @@ import { PrismaUserController } from './crud';
 		password: process.env.DB_PASSWORD,
 		database: 'venue_test',
 		autoLoadEntities: true,
-		synchronize: true})
+		synchronize: true})*/
 	   ],
   controllers: [AppController, EchoController, PrismaUserController],
   providers: [AppService, EchoService],
