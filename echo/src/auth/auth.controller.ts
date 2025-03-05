@@ -12,7 +12,7 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD ,
   port:  5332,
 });
-@Controller('auth')
+@Controller('venue/api/auth')
 export class AuthController {
 	constructor(private readonly authService: AuthService){
 	}
@@ -21,12 +21,16 @@ export class AuthController {
 	async login(@Request() req){
 		return this.authService.login(req.body);
 	}
-	  @Post('/register')
+	  @Post('register')
   async createUser(@Body() body: { username: string; password: string }) {
-    const { username } = body;
-    const result = await pool.query(
+    const { username, password } = body;
+    /*const result = await pool.query(
       'INSERT INTO account (id_generic) VALUES ($1) RETURNING *',
       [username]
+    );*/
+    const result = await pool.query(
+      'SELECT create_account($1,$2);',
+      [username,password]
     );
     return result.rows[0];
   }

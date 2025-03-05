@@ -33,8 +33,8 @@ let AuthController = class AuthController {
         return this.authService.login(req.body);
     }
     async createUser(body) {
-        const { username } = body;
-        const result = await pool.query('INSERT INTO account (id_generic) VALUES ($1) RETURNING *', [username]);
+        const { username, password } = body;
+        const result = await pool.query('SELECT create_account($1,$2);', [username, password]);
         return result.rows[0];
     }
     async getUsers() {

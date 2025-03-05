@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { EchoController } from './echo/echo.controller';
 import { EchoService } from './echo/echo.service';
 import { AuthModule } from './auth/auth.module';
+import { PrismaUserController } from './crud';
 
 @Module({
   imports: [AuthModule,
@@ -18,7 +19,7 @@ import { AuthModule } from './auth/auth.module';
 		autoLoadEntities: true,
 		synchronize: true})
 	   ],
-  controllers: [AppController, EchoController],
+  controllers: [AppController, EchoController, PrismaUserController],
   providers: [AppService, EchoService],
 })
 export class AppModule {}
