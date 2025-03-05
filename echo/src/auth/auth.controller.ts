@@ -23,10 +23,14 @@ export class AuthController {
 	}
 	  @Post('/register')
   async createUser(@Body() body: { username: string; password: string }) {
-    const { username } = body;
-    const result = await pool.query(
+    const { username, password } = body;
+    /*const result = await pool.query(
       'INSERT INTO account (id_generic) VALUES ($1) RETURNING *',
       [username]
+    );*/
+    const result = await pool.query(
+      'SELECT create_account($1,$2);',
+      [username,password]
     );
     return result.rows[0];
   }
