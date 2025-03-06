@@ -23,7 +23,7 @@ const pool = new pg_1.Pool({
     host: process.env.DB_HOST || 'localhost',
     database: process.env.DB_NAME || 'venue_test',
     password: process.env.DB_PASSWORD,
-    port: 5332,
+    port: process.env.DB_PORT,
 });
 let AuthController = class AuthController {
     constructor(authService) {
@@ -51,7 +51,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, common_1.Post)('/register'),
+    (0, common_1.Post)('register'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -64,7 +64,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getUsers", null);
 exports.AuthController = AuthController = __decorate([
-    (0, common_1.Controller)('auth'),
+    (0, common_1.Controller)('venue/api/auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map
