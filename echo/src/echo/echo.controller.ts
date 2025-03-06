@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post,Request } from '@nestjs/common';
 
-@Controller('venue/api/echo')
+@Controller('api/echo')
 export class EchoController {
     @Get()
     echo(@Body() body: any) {

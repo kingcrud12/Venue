@@ -12,7 +12,7 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD ,
   port:  process.env.DB_PORT,
 });
-@Controller('venue/api/auth')
+@Controller('api/pg/auth')
 export class AuthController {
 	constructor(private readonly authService: AuthService){
 	}
