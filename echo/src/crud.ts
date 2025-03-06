@@ -8,7 +8,7 @@ ConfigModule.forRoot();
 
 const prisma = new PrismaClient();
 
-@Controller('prisma-users')
+@Controller('venue/api/prisma/users')
 export class PrismaUserController {
   @Post()
   async createUser(@Body() body: { username: string; password: string }) {

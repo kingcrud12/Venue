@@ -46,6 +46,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PrismaUserController.prototype, "getUsers", null);
 exports.PrismaUserController = PrismaUserController = __decorate([
-    (0, common_1.Controller)('prisma-users')
+    (0, common_1.Controller)('venue/api/prisma/users')
 ], PrismaUserController);
 //# sourceMappingURL=crud.js.map
