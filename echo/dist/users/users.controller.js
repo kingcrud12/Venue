@@ -12,13 +12,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PrismaUserController = void 0;
+exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 const config_1 = require("@nestjs/config");
 config_1.ConfigModule.forRoot();
 const prisma = new client_1.PrismaClient();
-let PrismaUserController = class PrismaUserController {
+let UsersController = class UsersController {
     async createUser(body) {
         const { username } = body;
         const user = await prisma.account.create({
@@ -31,21 +31,21 @@ let PrismaUserController = class PrismaUserController {
         return users;
     }
 };
-exports.PrismaUserController = PrismaUserController;
+exports.UsersController = UsersController;
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('user/create'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], PrismaUserController.prototype, "createUser", null);
+], UsersController.prototype, "createUser", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('users/list'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], PrismaUserController.prototype, "getUsers", null);
-exports.PrismaUserController = PrismaUserController = __decorate([
-    (0, common_1.Controller)('venue/api/prisma/users')
-], PrismaUserController);
-//# sourceMappingURL=crud.js.map
+], UsersController.prototype, "getUsers", null);
+exports.UsersController = UsersController = __decorate([
+    (0, common_1.Controller)('api/prisma')
+], UsersController);
+//# sourceMappingURL=users.controller.js.map

@@ -64,7 +64,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getUsers", null);
 exports.AuthController = AuthController = __decorate([
-    (0, common_1.Controller)('venue/api/auth'),
+    (0, common_1.Controller)('api/pg/auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

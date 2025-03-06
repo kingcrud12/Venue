@@ -13,7 +13,7 @@ const app_service_1 = require("./app.service");
 const echo_controller_1 = require("./echo/echo.controller");
 const echo_service_1 = require("./echo/echo.service");
 const auth_module_1 = require("./auth/auth.module");
-const crud_1 = require("./crud");
+const users_controller_1 = require("./users/users.controller");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -21,7 +21,7 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [auth_module_1.AuthModule,
         ],
-        controllers: [app_controller_1.AppController, echo_controller_1.EchoController, crud_1.PrismaUserController],
+        controllers: [app_controller_1.AppController, echo_controller_1.EchoController, users_controller_1.UsersController],
         providers: [app_service_1.AppService, echo_service_1.EchoService],
     })
 ], AppModule);

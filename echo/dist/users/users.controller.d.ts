@@ -1,4 +1,4 @@
-export declare class PrismaUserController {
+export declare class UsersController {
     createUser(body: {
         username: string;
         password: string;

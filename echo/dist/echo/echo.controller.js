@@ -39,6 +39,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], EchoController.prototype, "echoPost", null);
 exports.EchoController = EchoController = __decorate([
-    (0, common_1.Controller)('venue/api/echo')
+    (0, common_1.Controller)('api/echo')
 ], EchoController);
 //# sourceMappingURL=echo.controller.js.map
