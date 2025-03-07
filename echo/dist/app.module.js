@@ -14,15 +14,20 @@ const echo_controller_1 = require("./echo/echo.controller");
 const echo_service_1 = require("./echo/echo.service");
 const auth_module_1 = require("./auth/auth.module");
 const users_controller_1 = require("./users/users.controller");
+const platform_express_1 = require("@nestjs/platform-express");
+const upload_service_1 = require("./upload/upload.service");
+const upload_controller_1 = require("./upload/upload.controller");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [auth_module_1.AuthModule,
+        imports: [auth_module_1.AuthModule, platform_express_1.MulterModule.register({
+                dest: '.'
+            })
         ],
-        controllers: [app_controller_1.AppController, echo_controller_1.EchoController, users_controller_1.UsersController],
-        providers: [app_service_1.AppService, echo_service_1.EchoService],
+        controllers: [app_controller_1.AppController, echo_controller_1.EchoController, users_controller_1.UsersController, upload_controller_1.UploadController],
+        providers: [app_service_1.AppService, echo_service_1.EchoService, upload_service_1.UploadService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
