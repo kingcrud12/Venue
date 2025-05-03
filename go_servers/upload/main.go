@@ -52,24 +52,5 @@ func fileUploadHandler(w http.ResponseWriter, r *http.Request) {
 	defer outFile.Close()
 	io.Copy(outFile, file)
 
-	// Insert filename into PostgreSQL
-	/*	if err := saveFileNameToDB(header.Filename); err != nil {
-		http.Error(w, "Database error", http.StatusInternalServerError)
-		return
-	}*/
-
 	fmt.Fprintf(w, "File uploaded successfully: %s", header.Filename)
 }
-
-/*func saveFileNameToDB(fileName string) error {
-	//	db, err := sql.Open("postgres", dbConnString)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	// Call PostgreSQL function
-	_, err = db.Exec("SELECT my_custom_function($1)", fileName)
-	return err
-}
-*/
